@@ -1,0 +1,29 @@
+{
+  "name": "blog_nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+     "start": "nodemon --inspect index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/V2309/Blog_Nodejs.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/V2309/Blog_Nodejs/issues"
+  },
+  "homepage": "https://github.com/V2309/Blog_Nodejs#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
