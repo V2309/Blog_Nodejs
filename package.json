@@ -6,7 +6,7 @@
     "start": "nodemon --inspect src/index.js",
     "watch": "sass --watch src/resources/scss:src/public/css",
     "dev": "concurrently \"yarn start\" \"yarn watch\"",
-     "prepare": "husky install",
+    "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,7 +22,6 @@
     "url": "https://github.com/V2309/Blog_Nodejs/issues"
   },
   "homepage": "https://github.com/V2309/Blog_Nodejs#readme",
-
   "lint-staged": {
     "src/**/*.{js,css,scss,html,hb,json}": [
       "prettier --single-quote --trailing-comma all --tab-width 4 --write"
@@ -44,7 +43,9 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
+    "mysql2": "^3.12.0",
     "nodemon": "^3.1.9",
-    "sass": "^1.83.1"
+    "sass": "^1.83.1",
+    "sequelize": "^6.37.5"
   }
 }
