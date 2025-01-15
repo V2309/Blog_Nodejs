@@ -21,11 +21,25 @@
     "url": "https://github.com/V2309/Blog_Nodejs/issues"
   },
   "homepage": "https://github.com/V2309/Blog_Nodejs#readme",
+
+  "lint-staged": {
+    "src/**/*.{js,css,scss,html,hb,json}": [
+      "prettier --single-quote --trailing-comma all --tab-width 4 --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "description": "",
   "dependencies": {
     "express": "^4.21.2",
     "express-handlebars": "^8.0.1",
-    "morgan": "^1.10.0"
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "morgan": "^1.10.0",
+    "prettier": "^3.4.2"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
