@@ -22,9 +22,9 @@ app.set('view engine', '.hbs'); // Định nghĩa view engine là handlebars
 app.set('views', path.join(__dirname, 'resources/views')); // Định nghĩa thư mục chứa các view
 
 // Gọi hàm route và truyền vào ứng dụng express
-      route(app); // Gọi hàm route và truyền vào ứng dụng express
+route(app); // Gọi hàm route và truyền vào ứng dụng express
 
 // khởi chạy serve tại port 3000
-              app.listen(port, () => {
-                  console.log(`Example app listening on port ${port}`);
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
 });
