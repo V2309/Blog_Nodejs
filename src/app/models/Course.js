@@ -1,5 +1,6 @@
+const { sequelize } = require('../../config/db');
 const { DataTypes } = require('sequelize');
-const sequelize = require('../../config/db');
+
 const Course = sequelize.define(
     'Course',
     {
@@ -11,6 +12,9 @@ const Course = sequelize.define(
             type: DataTypes.TEXT,
         },
         image: {
+            type: DataTypes.TEXT,
+        },
+        slug: {
             type: DataTypes.TEXT,
         },
         created_at: {

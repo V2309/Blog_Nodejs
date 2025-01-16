@@ -1,21 +1,13 @@
 const express = require('express'); // Import thư viện express
 const morgan = require('morgan'); // Import thư viện morgan
 const { engine } = require('express-handlebars'); // Import thư viện express-handlebars
-const sequelize = require('./config/db'); // Đảm bảo đường dẫn chính xác
+
 const path = require('path'); // Import thư viện path
 
 const route = require('./routes'); // Import file routes/index.js
 
 // Kết nối tới database
-async function connect() {
-    try {
-        // Kiểm tra kết nối với cơ sở dữ liệu
-        await sequelize.authenticate();
-        console.log('Connected to the database successfully.');
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-    }
-}
+const { connect } = require('./config/db');
 connect();
 // port mà ứng dụng sẽ lắng nghe
 const port = 3000;

@@ -1,4 +1,4 @@
-const Course = require('../models/course');
+const Course = require('../models/Course');
 const { mutipleSequelizeToGet } = require('../../util/sequelize');
 class SitesController {
     // phương thức lấy ra trang news [GET] /news
