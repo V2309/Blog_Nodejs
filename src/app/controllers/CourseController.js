@@ -56,6 +56,15 @@ showDetail(req, res, next) {
             .then(() => res.redirect('/me/stored/courses'))
             .catch(next);
     }
+    // [DELETE] /courses/:id
+    destroy(req, res, next) {
+        Course.destroy({
+            where: { id: req.params.id },
+        })
+            .then(() => res.status(200).json({ message: 'Xóa thành công' }))
+            .catch((error) => res.status(500).json({ error: error.message }));
+    }
+
     // phương thức lấy ra trang search [GET] /search
     search(req, res) {
         res.render('search');

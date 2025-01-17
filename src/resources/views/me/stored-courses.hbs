@@ -18,12 +18,11 @@
         <td>{{this.level}}</td>
         <td>{{this.created_at}}</td>
         <td>
-            <a href="/courses/{{this.id}}" class="btn btn-primary">Xem</a>
+            <a href="/courses/{{this.slug}}" class="btn btn-primary">Xem</a>
             <a href="/courses/{{this.id}}/edit" class="btn btn-warning">Sửa</a>
-            <form action="/courses/{{this.id}}" method="POST" style="display: inline-block">
-                <input type="hidden" name="_method" value="DELETE">
-                <button class="btn btn-danger">Xóa</button>
-            </form>
+        
+          <button data-id="{{this.id}}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-course-modal">Xóa</button>
+            
         </td>
       
       </tr>
@@ -32,3 +31,46 @@
     </tbody>
   </table>
 </div>
+{{!-- xac nhan xoa --}}
+<div  id="delete-course-modal" class="modal" tabindex="-1">  
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa khóc học?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn chấc chắn muốn xóa khóa học?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" >Xóa bỏ</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+ $(document).ready(function () {
+    $('#delete-course-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var courseId = button.data('id');
+        var modal = $(this);
+        modal.find('.btn-danger').off('click').on('click', function () {
+            $.ajax({
+                url: '/courses/' + courseId,
+                method: 'DELETE',
+                success: function (response) {
+                    console.log(response.message);
+                    window.location.reload(); // Reload trang nếu cần
+                },
+                error: function (xhr) {
+                    console.error('Lỗi:', xhr.responseText);
+                },
+            });
+        });
+    });
+});
+</script>
