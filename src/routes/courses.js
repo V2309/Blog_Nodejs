@@ -3,6 +3,15 @@ const router = express.Router();
 
 const courseController = require('../app/controllers/CourseController');
 
-router.get('/:slug', courseController.show);
+router.get('/createCourses', courseController.createCourses);
+
+router.post('/store', courseController.store);
+
+router.get('/:id/edit', courseController.edit);
+
+router.put('/:id', courseController.update);
+
+router.get('/:slug', courseController.showDetail);
+
 
 module.exports = router;
