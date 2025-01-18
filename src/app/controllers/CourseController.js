@@ -30,7 +30,7 @@ showDetail(req, res, next) {
 
         // Sử dụng phương thức `create` của Sequelize
         Course.create(formData)
-            .then(() => res.redirect('/'))
+            .then(() => res.redirect('/me/stored/courses'))
             .catch(next);
     }
     // [GET] /courses/:id/edit
@@ -56,15 +56,33 @@ showDetail(req, res, next) {
             .then(() => res.redirect('/me/stored/courses'))
             .catch(next);
     }
-    // [DELETE] /courses/:id
+    // [DELETE] /courses/:id soft delete
     destroy(req, res, next) {
-        Course.destroy({
-            where: { id: req.params.id },
-        })
-            .then(() => res.status(200).json({ message: 'Xóa thành công' }))
+        Course.update(
+            { deleted_at : new Date() }, // Đánh dấu thời điểm xóa
+            { where: { id: req.params.id } }
+        )
+            .then(() => res.status(200).json({ message: 'Xóa mềm thành công' }))
             .catch((error) => res.status(500).json({ error: error.message }));
     }
 
+    // [PATCH] /courses/:id/restore
+    restore(req, res, next) {
+        Course.restore({
+            where: { id: req.params.id },
+        })
+            .then(() => res.status(200).json({ message: 'Khôi phục thành công' }))
+            .catch((error) => res.status(500).json({ error: error.message }));
+    }
+    // [DELETE] /courses/:id/force
+    forceDestroy(req, res, next) {
+        Course.destroy({
+            where: { id: req.params.id },
+            force: true,
+        })
+            .then(() => res.status(200).json({ message: 'Xóa vĩnh viễn thành công' }))
+            .catch((error) => res.status(500).json({ error: error.message }));
+    }
     // phương thức lấy ra trang search [GET] /search
     search(req, res) {
         res.render('search');

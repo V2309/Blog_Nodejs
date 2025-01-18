@@ -33,10 +33,15 @@ const Course = sequelize.define(
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
         },
+        deleted_at: {
+            type: DataTypes.DATE,
+        },
     },
-    {
+
+    {   
+        paranoid: true, // Kích hoạt soft delete
         tableName: 'courses', // Tên bảng trong cơ sở dữ liệu
-        timestamps: false, // Tắt tự động thêm createdAt và updatedAt
+        timestamps: true, // Tắt tự động thêm createdAt và updatedAt
         underscored: true, // Sử dụng dấu gạch dưới thay vì viết hoa chữ cái đầu của mỗi từ
         hooks: {
             beforeCreate: async (course, options) => {

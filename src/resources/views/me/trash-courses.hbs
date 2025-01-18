@@ -1,0 +1,99 @@
+<div class="mt-4">
+  <h3>Khóa học đã xóa </h3>
+  <a href ="/me/stored/courses">Quay về danh sách khóa học</a>
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Tên khóa học </th>
+        <th scope="col">Trình độ</th>
+        <th scope="col">Thời gian đào tạo</th>
+        <th scope="col">Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#each courses}}
+      <tr>
+        <th scope="row">{{ sum @index 1}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.level}}</td>
+        <td>{{this.created_at}}</td>
+        <td>
+            <a class="btn btn-warning btn-restore" data-id="{{this.id}}">Khôi phục</a>
+        
+          <button data-id="{{this.id}}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-course-modal">Xóa vĩnh viễn</button>
+            
+        </td>
+      
+      </tr>
+      {{else}}
+      <tr>
+        <td colspan="5"  class="text-center mt-4" >Thùng rác trống
+       
+        </td>
+     
+      </tr>
+    {{/each}}
+    
+    </tbody>
+  </table>
+</div>
+{{!-- xac nhan xoa --}}
+<div  id="delete-course-modal" class="modal" tabindex="-1">  
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa khóc học?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn chắc chắn muốn xóa vĩnh viễn khóa học? Hành động này không thể khôi phục</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" >Xóa bỏ vĩnh viễn</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Xử lý nút khôi phục
+        $('.btn-restore').on('click', function () {
+            var courseId = $(this).data('id');
+            $.ajax({
+                url: '/courses/' + courseId + '/restore ', // URL cho hành động khôi phục
+                method: 'PATCH', // Sử dụng PATCH cho khôi phục
+                success: function (response) {
+                    console.log(response.message);
+                    window.location.reload(); // Reload trang để cập nhật danh sách
+                },
+                error: function (xhr) {
+                    console.error('Lỗi:', xhr.responseText);
+                },
+            });
+        });
+
+        // Xử lý nút xóa
+        $('#delete-course-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var courseId = button.data('id');
+            var modal = $(this);
+            modal.find('.btn-danger').off('click').on('click', function () {
+                $.ajax({
+                    url: '/courses/' + courseId + '/force', // URL cho hành động xóa vĩnh viễn
+                    method: 'DELETE',
+                    success: function (response) {
+                        console.log(response.message);
+                        window.location.reload(); // Reload trang nếu cần
+                    },
+                    error: function (xhr) {
+                        console.error('Lỗi:', xhr.responseText);
+                    },
+                });
+            });
+        });
+    });
+</script>
