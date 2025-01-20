@@ -21,9 +21,9 @@
     "url": "https://github.com/V2309/Blog_Nodejs/issues"
   },
   "homepage": "https://github.com/V2309/Blog_Nodejs#readme",
-
   "description": "",
   "dependencies": {
+    "bootstrap-icons": "^1.11.3",
     "express": "^4.21.2",
     "express-handlebars": "^8.0.1",
     "method-override": "^3.0.0",

@@ -6,10 +6,16 @@ const { Op } = require('sequelize');
 class MeController {
    // [GET] /me/stored/courses
  
-storedCourses(req, res, next) {
+   storedCourses(req, res, next) {
+    // Cấu hình các điều kiện sắp xếp nếu có query _sort
+    const order = req.query.hasOwnProperty('_sort')
+        ? [[req.query.column, req.query.type]]
+        : []; // Nếu không có sắp xếp, giữ mảng rỗng
+
+    // Sử dụng Promise.all để chạy các Promise song song
     Promise.all([
-        Course.count({ where: { deleted_at: { [Op.ne]: null } }, paranoid: false }), // Đếm các bản ghi đã xóa mềm
-        Course.findAll({ where: { deleted_at: null } }), // Lấy danh sách các bản ghi chưa bị xóa
+        Course.count({ where: { deleted_at: { [Op.ne]: null } }, paranoid: false }), // Đếm bản ghi đã xóa mềm
+        Course.findAll({ where: { deleted_at: null }, order }), // Lấy danh sách các bản ghi chưa bị xóa với sắp xếp
     ])
         .then(([deletedCount, courses]) => {
             res.render('me/stored-courses', {
@@ -17,8 +23,9 @@ storedCourses(req, res, next) {
                 deletedCount, // Truyền số lượng bản ghi đã xóa mềm vào view
             });
         })
-        .catch(next);
+        .catch(next); // Xử lý lỗi
 }
+
 
         // Course.findAll({})
         //     .then(courses => {

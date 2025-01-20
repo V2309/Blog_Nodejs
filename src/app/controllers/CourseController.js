@@ -78,11 +78,26 @@ showDetail(req, res, next) {
     forceDestroy(req, res, next) {
         Course.destroy({
             where: { id: req.params.id },
-            force: true,
+            force: true, // Xóa vĩnh viễn
         })
             .then(() => res.status(200).json({ message: 'Xóa vĩnh viễn thành công' }))
             .catch((error) => res.status(500).json({ error: error.message }));
     }
+    // [POST] /courses/handle-form-actions
+    handleFormActions(req, res, next) {
+        switch (req.body.action) {
+            case 'delete': // Hành động là "delete"
+                Course.destroy({
+                    where: { id: req.body.courseIds  }, // Xóa các khóa học có id nằm trong `courseIds`
+                })
+                    .then(() => res.redirect('back')) // Sau khi xóa, quay lại trang trước
+                    .catch(next); // Bắt lỗi và chuyển đến middleware xử lý lỗi
+                break;
+            default: // Nếu action không hợp lệ
+                res.json({ message: 'Action is invalid' });
+        }
+    }
+    
     // phương thức lấy ra trang search [GET] /search
     search(req, res) {
         res.render('search');

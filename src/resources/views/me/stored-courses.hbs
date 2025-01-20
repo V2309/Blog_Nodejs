@@ -1,4 +1,4 @@
-<div class="mt-4">
+<form  class="mt-4 container-form" name="container-form" method="post" action="/courses/handle-form-actions">
   <h3>Khóa học của tôi</h3>
   <a href="/me/trash/courses" class="btn btn-primary">Thùng rác {{deletedCount}}
     {{!-- icon trash --}}
@@ -10,27 +10,28 @@
   </a>
   <div class="mt-4 d-flex align-items-center">
     <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    <input type="checkbox" class="form-check-input" id="checkbox-all">
+    <label class="form-check-label" for="checkbox-all">Chọn tất cả</label>
     </div>
 
    <div class="col-md-2 select-all">
-    <select class="form-select "  aria-label="Default select example">
-      <option selected>-- Chọn hành động --</option>
-      <option value="1">One</option>
-      <option value="2">Two</option>
-      <option value="3">Three</option>
+    <select class="form-select "  aria-label="Default select example" name="action" required>
+      <option value="" selected>-- Chọn hành động --</option>
+      
+      <option value="delete">Xóa</option>
     </select>
    </div>
-   <button class="btn btn-primary">
+   <button class="btn btn-primary btn-apply disabled ">
       Áp dụng
    </button>
   </div>
   <table class="table mt-4">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Tên khóa học </th>
+        <th scope="col" colspan="2">#</th>
+        <th scope="col">Tên khóa học
+         {{{ sortable 'name' _sort}}}
+           </th>
         <th scope="col">Trình độ</th>
         <th scope="col">Thời gian đào tạo</th>
         <th scope="col">Hành động</th>
@@ -39,6 +40,9 @@
     <tbody>
       {{#each courses}}
       <tr>
+        <td>
+          <input type="checkbox" class="form-check-input" name="courseIds[]" value="{{this.id}}" id="">
+        </td>
         <th scope="row">{{ sum @index 1}}</th>
         <td>{{this.name}}</td>
         <td>{{this.level}}</td>
@@ -106,5 +110,41 @@
         });
       });
     });
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    var checkboxAll = $('#checkbox-all');
+    var containerForm = document.forms['container-form'];
+    var courseItemCheckbox = $('input[name="courseIds[]"]');
+    var btnApply = $('.btn-apply');
+    // checkboxAll clicked
+    checkboxAll.change(function () {
+      var isChecked = $(this).prop('checked');
+      courseItemCheckbox.prop('checked', isChecked);
+      renderCheckAllSubmitButton();
+    });
+    // courseItemCheckbox clicked
+    courseItemCheckbox.change(function () {
+      var isCheckedAll = courseItemCheckbox.length === courseItemCheckbox.filter(':checked').length;
+      checkboxAll.prop('checked', isCheckedAll);
+      renderCheckAllSubmitButton();
+    });
+    // check all submit button clicked
+     btnApply.on('submit', function (e) {
+     var isSubmittable = !btnApply.hasClass('disabled');
+      if (!isSubmittable) {
+        e.preventDefault();
+      }
+
+    });
+    // render check all submit button
+    function renderCheckAllSubmitButton() {
+      var checkedCount = $('input[name="courseIds[]"]:checked').length;
+      console.log(checkedCount);
+      if (checkedCount > 0) {
+        btnApply.removeClass('disabled');
+      } else {
+        btnApply.addClass('disabled');
+      }
+    } 
   });
 </script>
