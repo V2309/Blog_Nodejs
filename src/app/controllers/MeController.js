@@ -8,10 +8,9 @@ class MeController {
  
    storedCourses(req, res, next) {
     // Cấu hình các điều kiện sắp xếp nếu có query _sort
-    const order = req.query.hasOwnProperty('_sort')
-        ? [[req.query.column, req.query.type]]
-        : []; // Nếu không có sắp xếp, giữ mảng rỗng
-
+    const order = req.query.hasOwnProperty('_sort') && ['asc', 'desc'].includes(req.query.type)
+    ? [[req.query.column, req.query.type]] // Nếu hợp lệ, sử dụng cột và kiểu sắp xếp từ query
+    : []; // Nếu không, giữ mảng rỗng
     // Sử dụng Promise.all để chạy các Promise song song
     Promise.all([
         Course.count({ where: { deleted_at: { [Op.ne]: null } }, paranoid: false }), // Đếm bản ghi đã xóa mềm

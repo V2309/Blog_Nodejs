@@ -6,7 +6,7 @@ const path = require('path'); // Import thư viện path
 
 const route = require('./routes'); // Import file routes/index.js
 
-const SortMiddleware= require('./app/middlewares/SortMiddleware'); // Import file SortMiddleware.js
+const SortMiddleware= require('./app/middlewares/sortMiddleware'); // Import file SortMiddleware.js
 // Kết nối tới database
 const { connect } = require('./config/db');
 connect();
@@ -29,29 +29,7 @@ app.use(SortMiddleware); // Sử dụng SortMiddleware
 // Sử dụng handlebars làm view engine
 app.engine('.hbs', engine({
      extname: '.hbs',
-        helpers: {
-
-            sum: (a, b) => a + b,
-            
-            sortable : (field,sort) =>{
-                const sortType = field === sort.column ? sort.type : 'default';
-
-                const icons = {
-                    default: 'bi bi-filter-left',
-                    asc: 'bi bi-sort-alpha-up',
-                    desc: 'bi bi-sort-alpha-down',
-                }; 
-                const types = {
-                    default: 'asc',
-                    asc: 'desc',
-                    desc: 'asc',
-                }
-                const icon = icons[sortType];
-                const type = types[sortType];
-
-                return `<a href="?_sort&column=${field}&type=${type}"> <i class="${icon}"></i></a>`
-              }
-        },
+        helpers: require('./helpers/handlebars')
 
  })); // Định nghĩa handlebars engine với đuôi .hbs
 app.set('view engine', '.hbs'); // Định nghĩa view engine là handlebars
